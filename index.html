@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmer votre devis</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 500px; margin: 60px auto; padding: 20px; text-align: center; background: #f8f9fa; }
+  .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+  h1 { color: #1a1a2e; font-size: 22px; }
+  p { color: #666; margin: 15px 0; }
+  .btn-confirm { background: #27ae60; color: white; border: none; padding: 15px 40px; font-size: 18px; border-radius: 8px; cursor: pointer; margin: 10px; width: 100%; }
+  .btn-cancel { background: #e74c3c; color: white; border: none; padding: 15px 40px; font-size: 18px; border-radius: 8px; cursor: pointer; margin: 10px; width: 100%; }
+  .success { display: none; color: #27ae60; font-size: 20px; font-weight: bold; margin-top: 20px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Confirmation de devis</h1>
+  <p>Bonjour <strong id="nom"></strong>,</p>
+  <p>Souhaitez-vous confirmer votre acceptation du devis ?</p>
+  <button class="btn-confirm" onclick="confirmer()">✓ Oui, j'accepte le devis</button>
+  <button class="btn-cancel" onclick="window.close()">✗ Non, annuler</button>
+  <p class="success" id="success">✓ Votre acceptation a bien été enregistrée. Merci !</p>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+document.getElementById('nom').textContent = params.get('client') || 'Client';
+const row = params.get('row');
+
+async function confirmer() {
+  document.querySelector('.btn-confirm').disabled = true;
+  document.querySelector('.btn-cancel').disabled = true;
+  await fetch('https://hook.eu1.make.com/590cggknlufobaob52mrhtncv55zed7p?row=' + row + '&action=accepte');
+  document.getElementById('success').style.display = 'block';
+}
+</script>
+</body>
+</html>
