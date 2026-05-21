@@ -24,14 +24,20 @@
   <p class="success" id="success">✓ Votre acceptation a bien été enregistrée. Merci !</p>
 </div>
 <script>
+// On récupère TOUS les paramètres de l'URL du bouton du mail
 const params = new URLSearchParams(window.location.search);
 document.getElementById('nom').textContent = params.get('client') || 'Client';
+
 const row = params.get('row');
+const email = params.get('email'); // <--- AJOUT : On attrape l'email ici !
 
 async function confirmer() {
   document.querySelector('.btn-confirm').disabled = true;
   document.querySelector('.btn-cancel').disabled = true;
-  await fetch('https://hook.eu1.make.com/590cggknlufobaob52mrhtncv55zed7p?row=' + row + '&action=accepte');
+  
+  // MODIFICATION : On ajoute l'email encodé dans la requête envoyée à Make
+  await fetch('https://hook.eu1.make.com/590cggknlufobaob52mrhtncv55zed7p?row=' + row + '&email=' + encodeURIComponent(email) + '&action=accepte');
+  
   document.getElementById('success').style.display = 'block';
 }
 </script>
